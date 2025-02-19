@@ -95,6 +95,9 @@ function renderModal() {
         <div id="createModal" class="modal-content">
             <form>
             <div class="form-group">
+                <input type="text" class="form-control" id="inputId" aria-describedby="emailHelp" placeholder="Digite seu Id">
+            </div>
+            <div class="form-group">
                 <input type="text" class="form-control" id="inputNome" aria-describedby="emailHelp" placeholder="Digite seu nome">
             </div>
             <div class="form-group">
