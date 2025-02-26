@@ -78,6 +78,10 @@ function renderList(produtosTecnologia) {
                 <td>${produtosTecnologia[index].categoria}</td>
                 <td>${produtosTecnologia[index].preco}</td>
                 <td>${produtosTecnologia[index].marca}</td>
+                <td>
+                    <button type="button" class="btn btn-warning" onclick="renderModalEditar()" >Editar</button>
+                    <button type="button" class="btn btn-danger" onclick="deletarProdutos(${produtosTecnologia[index].id})" >Deletar</button>
+                </td>
             </tr>
 
         `
@@ -95,8 +99,8 @@ function renderModal() {
         <div id="createModal" class="modal-content">
             <form>
             <div class="form-group">
-                <input type="text" class="form-control" id="inputId" aria-describedby="emailHelp" placeholder="Digite seu Id">
-            </div>
+              <input type="text" class="form-control" id="inputId" aria-describedby="emailHelp" placeholder="Digite o id">
+          </div>
             <div class="form-group">
                 <input type="text" class="form-control" id="inputNome" aria-describedby="emailHelp" placeholder="Digite seu nome">
             </div>
@@ -110,26 +114,27 @@ function renderModal() {
                 <input type="text" class="form-control" id="inputMarca" aria-describedby="emailHelp" placeholder="Digite sua marca">
             </div>
             <button id="button1" type="button" onclick="cadastrarProdutos()" class="btn btn-primary">Enviar</button>
-            <button id="button2" type="button" onclick="removerModalCreate()"class="btn btn-primary">Remover</button>
+            <button id="button2" type="button" onclick="removerModal()"class="btn btn-primary">Remover</button>
             </form>
     </div>
     `
     body.appendChild(div)
 }
 
-function removerModalCreate() {
+function removerModal() {
     let modal = document.querySelector(".modal-overlay")
     body.removeChild(modal)
 }
 
 function cadastrarProdutos() {
+    let id = document.querySelector("#inputId").value
     let nome = document.querySelector("#inputNome").value
     let categoria = document.querySelector("#inputCategoria").value
     let preco = document.querySelector("#inputPreco").value
     let marca = document.querySelector("#inputMarca").value
 
     produtosTecnologia.push({
-        id:produtosTecnologia.length + 1,
+        id:id,
         nome:nome,
         categoria:categoria,
         preco:preco,
@@ -138,23 +143,65 @@ function cadastrarProdutos() {
 
     tbody.innerHTML = ""
     renderList(produtosTecnologia)
-    removerModalCreate()
+    removerModal()
 }
 
 function editarProdutos(){
-    let id = document.querySelector("#inputId").value
-    let nome = document.querySelector("#inputNome").value
-    let categoria = document.querySelector("#inputCategoria").value
-    let preco = document.querySelector("#inputPreco").value
-    let marca = document.querySelector("#inputMarca").value
+    let id = document.querySelector("#editId").value
+    let nome = document.querySelector("#editNome").value
+    let categoria = document.querySelector("#editCategoria").value
+    let preco = document.querySelector("#editPreco").value
+    let marca = document.querySelector("#editMarca").value
 
-    let index = produtosTecnologia.findIndex( () => {} )
+    let index = produtosTecnologia.findIndex( item => item.id == id )
 
-    produtosTecnologia[index] ({
+    produtosTecnologia[index] = {
         id:id,
         nome:nome,
         categoria:categoria,
         preco:preco,
         marca:marca,
-    })
+    }
+
+tbody.innerHTML = ""
+renderList(produtosTecnologia)
+removerModal()
+
+}
+
+function renderModalEditar() {
+    let div = document.createElement("div")
+    div.classList.add("modal-overlay")
+    div.innerHTML = `
+        <div id="createModal" class="modal-content">
+            <form>
+            <div class="form-group">
+              <input type="text" class="form-control" id="editId" aria-describedby="emailHelp" placeholder="Digite o id">
+          </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="editNome" aria-describedby="emailHelp" placeholder="Digite seu nome">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="editCategoria" aria-describedby="emailHelp" placeholder="Digite sua categoria">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="editPreco" aria-describedby="emailHelp" placeholder="Digite sua preço">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="editMarca" aria-describedby="emailHelp" placeholder="Digite sua marca">
+            </div>
+            <button id="button1" type="button" onclick="editarProdutos()" class="btn btn-primary">Enviar</button>
+            <button id="button2" type="button" onclick="removerModal()"class="btn btn-primary">Remover</button>
+            </form>
+    </div>
+    `
+    body.appendChild(div)
+}
+
+function deletarProdutos(id) {
+    let index = produtosTecnologia.findIndex( item => item.id == id)
+   
+    produtosTecnologia.splice(index,1)
+    tbody.innerHTML = ""
+    renderList(produtosTecnologia)
 }
